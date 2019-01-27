@@ -4,7 +4,8 @@ export default class App extends Component {
   // todos array holds all todo items
   // inputVal is todo text currently being inputted
   state = {
-    todos: [],
+    // todos array will be grabbed from localStorage getItem
+    todos: JSON.parse(localStorage.getItem('todos')),
     inputVal: ''
   }
 
@@ -36,7 +37,7 @@ export default class App extends Component {
 
   render() {
     return (
-      <div className="ui center aligned container">
+      <div className="ui center aligned text container">
         <h1
           style={{ opacity: '0.3', fontSize: '100px' }}
           className="ui red center aligned block header"
@@ -54,6 +55,17 @@ export default class App extends Component {
             />
           </div>
         </div>
+        {/* map through todos list and only show if length of todo is greater than 0 */}
+        {this.state.todos.length ? (<div className="ui stacked segments">
+          {this.state.todos.map(todo => {
+            return (
+              <div className="ui left aligned secondary segment">
+                <p style={{paddingLeft: '10px', fontSize: '20px'}}>{todo}</p>
+              </div>
+            )
+          })}
+        </div>) : (<span/>)}
+
       </div>
     )
   }
