@@ -11,11 +11,14 @@ export default class App extends Component {
   componentDidUpdate = () => {}
 
   onSubmit = e => {
-    if (e.key === 'Enter') {
-      this.setState({
-        todos: [...this.state.todos, e.target.value],
-        inputVal: ''
-      })
+    if (e.key === 'Enter' && this.state.inputVal) {
+      this.setState(
+        {
+          todos: [...this.state.todos, e.target.value],
+          inputVal: ''
+        },
+        () => localStorage.setItem('todos', JSON.stringify(this.state.todos))
+      )
     }
   }
 
