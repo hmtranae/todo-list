@@ -77,14 +77,16 @@ export default class App extends Component {
     )
   }
 
+  // adds active class to all todos in list
   selectAllTodos = () => {
     const todos = this.state.todos
-    todos.map(todo => todo.active = !todo.active)
+    todos.map(todo => (todo.active = !todo.active))
     this.setState({
       todos
     })
   }
 
+  // add active class to the selected todo
   selectTodo = selectedTodo => {
     const todos = this.state.todos
     const index = todos.findIndex(todo => todo.value === selectedTodo.value)
@@ -135,10 +137,16 @@ export default class App extends Component {
                   onMouseLeave={this.handleMouseLeave.bind(null, todo)}
                 >
                   {/* // show delete icon when mouse over that todo */}
-                  <p style={{ paddingLeft: '10px', fontSize: '20px' }}>
+                  <p
+                    style={{
+                      paddingLeft: '10px',
+                      fontSize: '20px',
+                      textDecoration: todo.active ? 'line-through' : null
+                    }}
+                  >
                     <i
                       onClick={this.selectTodo.bind(null, todo)}
-                      style={{ paddingRight: '40px' }}
+                      style={{ paddingRight: '40px', textDecoration: todo.active ? 'none' : null  }}
                       className={
                         todo.active
                           ? 'circle outline red icon'
