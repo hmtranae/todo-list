@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import './App.css'
 
 export default class App extends Component {
   // todos array holds all todo items
@@ -18,7 +19,9 @@ export default class App extends Component {
     }
   }
 
-  componentDidUpdate = () => {}
+  componentDidUpdate = () => {
+
+  }
 
   // submit only if e.key is enter key and not empty input value
   onSubmit = e => {
@@ -98,7 +101,7 @@ export default class App extends Component {
 
   render() {
     return (
-      <div className="ui center aligned text container">
+      <div style={{paddingTop: '50px'}} className="ui center aligned text container">
         <h1
           style={{ opacity: '0.3', fontSize: '100px' }}
           className="ui red center aligned block header"
@@ -117,6 +120,7 @@ export default class App extends Component {
               />
             ) : null}
             <input
+              autofocus='true'
               onChange={this.onChange}
               onKeyPress={this.onSubmit}
               value={this.state.inputVal}
