@@ -73,6 +73,10 @@ export default class App extends Component {
     )
   }
 
+  selectAllTodos = () => {
+    console.log('hi')
+  }
+
   render() {
     // console.log(this.state.todos)
     return (
@@ -84,7 +88,14 @@ export default class App extends Component {
           todos
         </h1>
         <div className="ui massive form">
-          <div className="field">
+          <div className="ui left icon fluid input">
+            {this.state.todos.length ? (
+              <i
+                onClick={this.selectAllTodos}
+                style={{ opacity: '0.4' }}
+                className="chevron down link icon"
+              />
+            ) : null}
             <input
               onChange={this.onChange}
               onKeyPress={this.onSubmit}
@@ -115,7 +126,7 @@ export default class App extends Component {
                           float: 'right',
                           verticalAlign: 'center'
                         }}
-                        className="x red icon"
+                        className="x red link icon"
                       />
                     ) : null}
                   </p>
