@@ -24,7 +24,7 @@ export default class App extends Component {
   // submit only if e.key is enter key and not empty input value
   onSubmit = e => {
     if (e.key === 'Enter' && this.state.inputVal) {
-      const todo = {value: e.target.value, isHovering: false}
+      const todo = { value: e.target.value, isHovering: false }
       this.setState(
         {
           todos: [...this.state.todos, todo],
@@ -43,11 +43,19 @@ export default class App extends Component {
 
   // handleMouseHover returns opposite of isHovering
   // i gives the id of that todo
-  handleMouseHover = i => {
-    console.log(i)
-    this.setState({
-      isHovering: !this.state.isHovering
-    })
+  handleMouseEnter = selectedTodo => {
+    // selectedTodo.isHovering = true;
+    const todos = this.state.todos
+    const index = todos.findIndex(todo => todo.value === selectedTodo.value)
+    todos[index].isHovering = true
+    this.setState({ todos })
+  }
+
+  handleMouseLeave = selectedTodo => {
+    const todos = this.state.todos
+    const index = todos.findIndex(todo => todo.value === selectedTodo.value)
+    todos[index].isHovering = false
+    this.setState({ todos })
   }
 
   deleteTodo = () => {
@@ -55,7 +63,7 @@ export default class App extends Component {
   }
 
   render() {
-    // console.log(this.state.isHovering)
+    console.log(this.state.todos)
     return (
       <div className="ui center aligned text container">
         <h1
@@ -82,10 +90,9 @@ export default class App extends Component {
               return (
                 <div
                   key={i}
-                  className="ui left aligned secondary segment"
-                  // show delete icon when mouse over that todo
-                  onMouseEnter={this.handleMouseHover.bind(null, i)}
-                  onMouseLeave={this.handleMouseHover}
+                  className="ui left aligned secondary segment" // show delete icon when mouse over that todo
+                  onMouseEnter={this.handleMouseEnter.bind(null, todo)}
+                  onMouseLeave={this.handleMouseLeave.bind(null, todo)}
                 >
                   <p style={{ paddingLeft: '10px', fontSize: '20px' }}>
                     {todo.value}
