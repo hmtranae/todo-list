@@ -6,7 +6,8 @@ export default class App extends Component {
   state = {
     // todos array will be grabbed from localStorage getItem
     todos: JSON.parse(localStorage.getItem('todos')),
-    inputVal: ''
+    inputVal: '',
+    isHovering: false
   }
 
   componentDidMount = () => {}
@@ -18,11 +19,9 @@ export default class App extends Component {
     if (e.key === 'Enter' && this.state.inputVal) {
       this.setState(
         {
-          todos: [...this.state.todos, e.target.value],
-          // using controlled inputs, reset inputVal to be empty
+          todos: [...this.state.todos, e.target.value], // using controlled inputs, reset inputVal to be empty
           inputVal: ''
-        },
-        // callback function using localstorage setter to update its todo list
+        }, // callback function using localstorage setter to update its todo list
         () => localStorage.setItem('todos', JSON.stringify(this.state.todos))
       )
     }
@@ -30,9 +29,17 @@ export default class App extends Component {
 
   // updates the controlled input with onChange
   onChange = e => {
-    this.setState({
-      inputVal: e.target.value
-    })
+    this.setState({ inputVal: e.target.value })
+  }
+
+  // handleMouseHover will setstate based on what toggleHoverState returns
+  handleMouseHover = () => {
+    this.setState(this.toggleHoverState)
+  }
+
+  // toggleHoverState takes state as argument and returns the opposite
+  toggleHoverState = state => {
+    return { isHovering: !state.isHovering }
   }
 
   render() {
@@ -56,16 +63,25 @@ export default class App extends Component {
           </div>
         </div>
         {/* map through todos list and only show if length of todo is greater than 0 */}
-        {this.state.todos.length ? (<div className="ui stacked segments">
-          {this.state.todos.map(todo => {
-            return (
-              <div className="ui left aligned secondary segment">
-                <p style={{paddingLeft: '10px', fontSize: '20px'}}>{todo}</p>
-              </div>
-            )
-          })}
-        </div>) : (<span/>)}
-
+        {this.state.todos.length ? (
+          <div
+            className="ui stacked segments" // show delete icon when mouse over that todo
+            onMouseEnter={this.handleMouseHover}
+            onMouseLeave={this.handleMouseHover}
+          >
+            {this.state.todos.map(todo => {
+              return (
+                <div className="ui left aligned secondary segment">
+                  <p style={{ paddingLeft: '10px', fontSize: '20px' }}>
+                    {todo}
+                  </p>
+                </div>
+              )
+            })}
+          </div>
+        ) : (
+          <span />
+        )}
       </div>
     )
   }
