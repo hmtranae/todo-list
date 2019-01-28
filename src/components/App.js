@@ -78,7 +78,11 @@ export default class App extends Component {
   }
 
   selectAllTodos = () => {
-    console.log('hi')
+    const todos = this.state.todos
+    todos.map(todo => todo.active = !todo.active)
+    this.setState({
+      todos
+    })
   }
 
   selectTodo = selectedTodo => {
@@ -91,7 +95,6 @@ export default class App extends Component {
   }
 
   render() {
-    // console.log(this.state.todos)
     return (
       <div className="ui center aligned text container">
         <h1
