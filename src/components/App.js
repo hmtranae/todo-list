@@ -7,7 +7,6 @@ export default class App extends Component {
     // initial value of todos is empty array
     todos: [],
     inputVal: '',
-    isHovering: false
   }
 
   componentDidMount = () => {
@@ -63,6 +62,7 @@ export default class App extends Component {
   }
 
   deleteTodo = selectedTodo => {
+    // use filter to update todo array state and update localstorage
     this.setState(
       {
         todos: this.state.todos.filter(
@@ -89,6 +89,8 @@ export default class App extends Component {
         </h1>
         <div className="ui massive form">
           <div className="ui left icon fluid input">
+            {/* select all todo icon if there is at least one todo */}
+            {/* chevron icon when clicked will select all todos */}
             {this.state.todos.length ? (
               <i
                 onClick={this.selectAllTodos}
@@ -118,6 +120,7 @@ export default class App extends Component {
                 >
                   <p style={{ paddingLeft: '10px', fontSize: '20px' }}>
                     {todo.value}
+                    {/* will show delete icon if isHovering property is true */}
                     {todo.isHovering ? (
                       <i
                         onClick={this.deleteTodo.bind(null, todo)}
