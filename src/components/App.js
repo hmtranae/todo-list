@@ -66,7 +66,7 @@ export default class App extends Component {
     this.setState(
       {
         todos: this.state.todos.filter(
-          todo => todo.value !== selectedTodo.value
+          todo => todo.isHovering !== selectedTodo.isHovering
         )
       },
       () => localStorage.setItem('todos', JSON.stringify(this.state.todos))
@@ -108,15 +108,16 @@ export default class App extends Component {
                   <p style={{ paddingLeft: '10px', fontSize: '20px' }}>
                     {todo.value}
                     {todo.isHovering ? (
-                      <button
+                      <i
                         onClick={this.deleteTodo.bind(null, todo)}
-                        className="ui red basic right floated icon button"
-                      >
-                        <i className="x icon" />
-                      </button>
-                    ) : (
-                      <span />
-                    )}
+                        style={{
+                          opacity: '0.4',
+                          float: 'right',
+                          verticalAlign: 'center'
+                        }}
+                        className="x red icon"
+                      />
+                    ) : null}
                   </p>
                 </div>
               )
