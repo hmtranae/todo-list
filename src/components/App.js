@@ -6,7 +6,7 @@ export default class App extends Component {
   state = {
     // initial value of todos is empty array
     todos: [],
-    inputVal: '',
+    inputVal: ''
   }
 
   componentDidMount = () => {
@@ -23,7 +23,12 @@ export default class App extends Component {
   // submit only if e.key is enter key and not empty input value
   onSubmit = e => {
     if (e.key === 'Enter' && this.state.inputVal) {
-      const todo = { value: e.target.value, isHovering: false }
+      const todo = {
+        value: e.target.value,
+        isHovering: false,
+        selected: false,
+        active: false
+      }
       this.setState(
         {
           todos: [...this.state.todos, todo],
@@ -51,7 +56,6 @@ export default class App extends Component {
     )
   }
 
-  // handleMouseLeave takes sets isHovering to be false and updates localstorage
   handleMouseLeave = selectedTodo => {
     const todos = this.state.todos
     const index = todos.findIndex(todo => todo.value === selectedTodo.value)
@@ -75,6 +79,15 @@ export default class App extends Component {
 
   selectAllTodos = () => {
     console.log('hi')
+  }
+
+  selectTodo = selectedTodo => {
+    const todos = this.state.todos
+    const index = todos.findIndex(todo => todo.value === selectedTodo.value)
+    todos[index].active = !this.state.todos[index].active
+    this.setState({ todos }, () =>
+      localStorage.setItem('todos', JSON.stringify(this.state.todos))
+    )
   }
 
   render() {
@@ -114,11 +127,21 @@ export default class App extends Component {
               return (
                 <div
                   key={i}
-                  className="ui left aligned secondary segment" // show delete icon when mouse over that todo
+                  className="ui left aligned secondary segment"
                   onMouseEnter={this.handleMouseEnter.bind(null, todo)}
                   onMouseLeave={this.handleMouseLeave.bind(null, todo)}
                 >
+                  {/* // show delete icon when mouse over that todo */}
                   <p style={{ paddingLeft: '10px', fontSize: '20px' }}>
+                    <i
+                      onClick={this.selectTodo.bind(null, todo)}
+                      style={{ paddingRight: '40px' }}
+                      className={
+                        todo.active
+                          ? 'circle outline red icon'
+                          : 'circle outline icon' // className="circle outline icon"
+                      }
+                    />
                     {todo.value}
                     {/* will show delete icon if isHovering property is true */}
                     {todo.isHovering ? (
