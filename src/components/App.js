@@ -42,7 +42,12 @@ export default class App extends Component {
     return { isHovering: !state.isHovering }
   }
 
+  deleteTodo = () => {
+    console.log('hi')
+  }
+
   render() {
+    // console.log(this.state.isHovering)
     return (
       <div className="ui center aligned text container">
         <h1
@@ -74,6 +79,16 @@ export default class App extends Component {
                 <div className="ui left aligned secondary segment">
                   <p style={{ paddingLeft: '10px', fontSize: '20px' }}>
                     {todo}
+                    {this.state.isHovering ? (
+                      <button
+                        onClick={this.deleteTodo}
+                        className="ui red basic right floated icon button"
+                      >
+                        <i className="x icon" />
+                      </button>
+                    ) : (
+                      <span />
+                    )}
                   </p>
                 </div>
               )
