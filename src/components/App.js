@@ -32,14 +32,11 @@ export default class App extends Component {
     this.setState({ inputVal: e.target.value })
   }
 
-  // handleMouseHover will setstate based on what toggleHoverState returns
+  // handleMouseHover returns opposite of isHovering
   handleMouseHover = () => {
-    this.setState(this.toggleHoverState)
-  }
-
-  // toggleHoverState takes state as argument and returns the opposite
-  toggleHoverState = state => {
-    return { isHovering: !state.isHovering }
+    this.setState({
+      isHovering: !this.state.isHovering
+    })
   }
 
   deleteTodo = () => {
@@ -76,7 +73,7 @@ export default class App extends Component {
           >
             {this.state.todos.map(todo => {
               return (
-                <div className="ui left aligned secondary segment">
+                <div key={todo.toString()} className="ui left aligned secondary segment">
                   <p style={{ paddingLeft: '10px', fontSize: '20px' }}>
                     {todo}
                     {this.state.isHovering ? (
