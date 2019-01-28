@@ -41,21 +41,21 @@ export default class App extends Component {
     this.setState({ inputVal: e.target.value })
   }
 
-  // handleMouseHover returns opposite of isHovering
+  // handleMouseEnter takes sets isHovering to be true and updates localstorage
   // i gives the id of that todo
   handleMouseEnter = selectedTodo => {
-    // selectedTodo.isHovering = true;
     const todos = this.state.todos
     const index = todos.findIndex(todo => todo.value === selectedTodo.value)
     todos[index].isHovering = true
-    this.setState({ todos })
+    this.setState({ todos }, () => localStorage.setItem('todos', JSON.stringify(this.state.todos)))
   }
 
+  // handleMouseLeave takes sets isHovering to be false and updates localstorage
   handleMouseLeave = selectedTodo => {
     const todos = this.state.todos
     const index = todos.findIndex(todo => todo.value === selectedTodo.value)
     todos[index].isHovering = false
-    this.setState({ todos })
+    this.setState({ todos }, () => localStorage.setItem('todos', JSON.stringify(this.state.todos)))
   }
 
   deleteTodo = () => {
