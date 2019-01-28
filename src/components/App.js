@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import './App.css'
+import React, { Component } from "react";
+import "./App.css";
 
 export default class App extends Component {
   // todos array holds all todo items
@@ -7,66 +7,64 @@ export default class App extends Component {
   state = {
     // initial value of todos is empty array
     todos: [],
-    inputVal: ''
-  }
+    inputVal: ""
+  };
 
   componentDidMount = () => {
     // todos array will be grabbed from localStorage getItem if localStorage is not empty
     if (localStorage.length) {
       this.setState({
-        todos: JSON.parse(localStorage.getItem('todos'))
-      })
+        todos: JSON.parse(localStorage.getItem("todos"))
+      });
     }
-  }
+  };
 
-  componentDidUpdate = () => {
-
-  }
+  componentDidUpdate = () => {};
 
   // submit only if e.key is enter key and not empty input value
   onSubmit = e => {
-    if (e.key === 'Enter' && this.state.inputVal) {
+    if (e.key === "Enter" && this.state.inputVal) {
       const todo = {
         value: e.target.value,
         isHovering: false,
         selected: false,
         active: false
-      }
+      };
       this.setState(
         {
           todos: [...this.state.todos, todo],
           // using controlled inputs, reset inputVal to be empty
-          inputVal: ''
+          inputVal: ""
         }, // callback function using localstorage setter to update its todo list
-        () => localStorage.setItem('todos', JSON.stringify(this.state.todos))
-      )
+        () => localStorage.setItem("todos", JSON.stringify(this.state.todos))
+      );
     }
-  }
+  };
 
   // updates the controlled input with onChange
   onChange = e => {
-    this.setState({ inputVal: e.target.value })
-  }
+    this.setState({ inputVal: e.target.value });
+  };
 
   // handleMouseEnter takes sets isHovering to be true and updates localstorage
   // i gives the id of that todo
   handleMouseEnter = selectedTodo => {
-    const todos = this.state.todos
-    const index = todos.findIndex(todo => todo.value === selectedTodo.value)
-    todos[index].isHovering = true
+    const todos = this.state.todos;
+    const index = todos.findIndex(todo => todo.value === selectedTodo.value);
+    todos[index].isHovering = true;
     this.setState({ todos }, () =>
-      localStorage.setItem('todos', JSON.stringify(this.state.todos))
-    )
-  }
+      localStorage.setItem("todos", JSON.stringify(this.state.todos))
+    );
+  };
 
   handleMouseLeave = selectedTodo => {
-    const todos = this.state.todos
-    const index = todos.findIndex(todo => todo.value === selectedTodo.value)
-    todos[index].isHovering = false
+    const todos = this.state.todos;
+    const index = todos.findIndex(todo => todo.value === selectedTodo.value);
+    todos[index].isHovering = false;
     this.setState({ todos }, () =>
-      localStorage.setItem('todos', JSON.stringify(this.state.todos))
-    )
-  }
+      localStorage.setItem("todos", JSON.stringify(this.state.todos))
+    );
+  };
 
   deleteTodo = selectedTodo => {
     // use filter to update todo array state and update localstorage
@@ -76,34 +74,55 @@ export default class App extends Component {
           todo => todo.isHovering !== selectedTodo.isHovering
         )
       },
-      () => localStorage.setItem('todos', JSON.stringify(this.state.todos))
-    )
-  }
+      () => localStorage.setItem("todos", JSON.stringify(this.state.todos))
+    );
+  };
 
   // adds active class to all todos in list
   selectAllTodos = () => {
-    const todos = this.state.todos
-    todos.map(todo => (todo.active = !todo.active))
+    const todos = this.state.todos;
+    if (this.howManyActive(todos) === true) {
+      todos.map(todo => (todo.active = false));
+    } else {
+      todos.map(todo => (todo.active = true));
+    }
     this.setState({
       todos
-    })
-  }
+    });
+  };
+
+  howManyActive = arr => {
+    let count = 0;
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i].active === true) {
+        count++;
+      }
+    }
+    if (count === arr.length) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   // add active class to the selected todo
   selectTodo = selectedTodo => {
-    const todos = this.state.todos
-    const index = todos.findIndex(todo => todo.value === selectedTodo.value)
-    todos[index].active = !this.state.todos[index].active
+    const todos = this.state.todos;
+    const index = todos.findIndex(todo => todo.value === selectedTodo.value);
+    todos[index].active = !this.state.todos[index].active;
     this.setState({ todos }, () =>
-      localStorage.setItem('todos', JSON.stringify(this.state.todos))
-    )
-  }
+      localStorage.setItem("todos", JSON.stringify(this.state.todos))
+    );
+  };
 
   render() {
     return (
-      <div style={{paddingTop: '50px'}} className="ui center aligned text container">
+      <div
+        style={{ paddingTop: "50px" }}
+        className="ui center aligned text container"
+      >
         <h1
-          style={{ opacity: '0.3', fontSize: '100px' }}
+          style={{ opacity: "0.3", fontSize: "100px" }}
           className="ui red center aligned block header"
         >
           todos
@@ -115,12 +134,12 @@ export default class App extends Component {
             {this.state.todos.length ? (
               <i
                 onClick={this.selectAllTodos}
-                style={{ opacity: '0.4' }}
+                style={{ opacity: "0.4" }}
                 className="chevron down link icon"
               />
             ) : null}
             <input
-              autofocus='true'
+              autoFocus={true}
               onChange={this.onChange}
               onKeyPress={this.onSubmit}
               value={this.state.inputVal}
@@ -143,18 +162,21 @@ export default class App extends Component {
                   {/* // show delete icon when mouse over that todo */}
                   <p
                     style={{
-                      paddingLeft: '10px',
-                      fontSize: '20px',
-                      textDecoration: todo.active ? 'line-through' : null
+                      paddingLeft: "10px",
+                      fontSize: "20px",
+                      textDecoration: todo.active ? "line-through" : null
                     }}
                   >
                     <i
                       onClick={this.selectTodo.bind(null, todo)}
-                      style={{ paddingRight: '40px', textDecoration: todo.active ? 'none' : null  }}
+                      style={{
+                        paddingRight: "40px",
+                        textDecoration: todo.active ? "none" : null
+                      }}
                       className={
                         todo.active
-                          ? 'circle outline red icon'
-                          : 'circle outline icon' // className="circle outline icon"
+                          ? "circle outline red icon"
+                          : "circle outline icon" // className="circle outline icon"
                       }
                     />
                     {todo.value}
@@ -163,22 +185,22 @@ export default class App extends Component {
                       <i
                         onClick={this.deleteTodo.bind(null, todo)}
                         style={{
-                          opacity: '0.4',
-                          float: 'right',
-                          verticalAlign: 'center'
+                          opacity: "0.4",
+                          float: "right",
+                          verticalAlign: "center"
                         }}
                         className="x red link icon"
                       />
                     ) : null}
                   </p>
                 </div>
-              )
+              );
             })}
           </div>
         ) : (
           <span />
         )}
       </div>
-    )
+    );
   }
 }
