@@ -47,7 +47,9 @@ export default class App extends Component {
     const todos = this.state.todos
     const index = todos.findIndex(todo => todo.value === selectedTodo.value)
     todos[index].isHovering = true
-    this.setState({ todos }, () => localStorage.setItem('todos', JSON.stringify(this.state.todos)))
+    this.setState({ todos }, () =>
+      localStorage.setItem('todos', JSON.stringify(this.state.todos))
+    )
   }
 
   // handleMouseLeave takes sets isHovering to be false and updates localstorage
@@ -55,15 +57,24 @@ export default class App extends Component {
     const todos = this.state.todos
     const index = todos.findIndex(todo => todo.value === selectedTodo.value)
     todos[index].isHovering = false
-    this.setState({ todos }, () => localStorage.setItem('todos', JSON.stringify(this.state.todos)))
+    this.setState({ todos }, () =>
+      localStorage.setItem('todos', JSON.stringify(this.state.todos))
+    )
   }
 
-  deleteTodo = () => {
-    console.log('hi')
+  deleteTodo = selectedTodo => {
+    this.setState(
+      {
+        todos: this.state.todos.filter(
+          todo => todo.value !== selectedTodo.value
+        )
+      },
+      () => localStorage.setItem('todos', JSON.stringify(this.state.todos))
+    )
   }
 
   render() {
-    console.log(this.state.todos)
+    // console.log(this.state.todos)
     return (
       <div className="ui center aligned text container">
         <h1
@@ -98,7 +109,7 @@ export default class App extends Component {
                     {todo.value}
                     {todo.isHovering ? (
                       <button
-                        onClick={this.deleteTodo}
+                        onClick={this.deleteTodo.bind(null, todo)}
                         className="ui red basic right floated icon button"
                       >
                         <i className="x icon" />
